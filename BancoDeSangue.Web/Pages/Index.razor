@@ -1,0 +1,92 @@
+@page "/"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<PageTitle>Dashboard - Banco de Sangue</PageTitle>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Painel do Banco de Sangue</h2>
+
+    @if (!string.IsNullOrEmpty(mensagemErro))
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Erro de Conexão:</strong> @mensagemErro
+            <button type="button" class="btn-close" @onclick="() => mensagemErro = null"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">Estoque Total</div>
+                <div class="card-body">
+                    <h4 class="card-title">@estoque.TotalBolsas Bolsas</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Liberadas</div>
+                <div class="card-body">
+                    <h4 class="card-title">@estoque.BolsasLiberadas</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-header">Em Quarentena</div>
+                <div class="card-body">
+                    <h4 class="card-title">@estoque.BolsasQuarentena</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-header">Descartadas</div>
+                <div class="card-body">
+                    <h4 class="card-title">@estoque.BolsasDescartadas</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="/triagem" class="btn btn-primary me-2">Nova Triagem / Registrar Exames</a>
+        <button class="btn btn-outline-secondary" @onclick="CarregarEstoque">Atualizar Estoque</button>
+    </div>
+</div>
+
+@code {
+    private EstoqueDTO estoque = new();
+    private string? mensagemErro;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CarregarEstoque();
+    }
+
+    private async Task CarregarEstoque()
+    {
+        try
+        {
+            mensagemErro = null;
+            var resultado = await Http.GetFromJsonAsync<EstoqueDTO>("api/estoque");
+            if (resultado != null)
+            {
+                estoque = resultado;
+            }
+        }
+        catch (Exception ex)
+        {
+            mensagemErro = $"Não foi possível carregar os dados do estoque ({ex.Message}). Verifique se a API está online.";
+        }
+    }
+
+    public class EstoqueDTO
+    {
+        public int TotalBolsas { get; set; }
+        public int BolsasLiberadas { get; set; }
+        public int BolsasQuarentena { get; set; }
+        public int BolsasDescartadas { get; set; }
+    }
+}

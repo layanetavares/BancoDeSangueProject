@@ -1,0 +1,168 @@
+@page "/triagem"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<PageTitle>Triagem e Exames - Banco de Sangue</PageTitle>
+
+<div class="container mt-4">
+    <h2>Registrar Exames Sorológicos (Triagem)</h2>
+    <p class="text-muted">Critérios conforme RDC 34/2014 - Anvisa</p>
+
+    @if (!string.IsNullOrEmpty(mensagemErro))
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Erro:</strong> @mensagemErro
+            <button type="button" class="btn-close" @onclick="() => mensagemErro = null"></button>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(mensagemSucesso))
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @mensagemSucesso
+            <button type="button" class="btn-close" @onclick="() => mensagemSucesso = null"></button>
+        </div>
+    }
+
+    <EditForm Model="@triagemModel" OnValidSubmit="@SalvarExames">
+        <DataAnnotationsValidator />
+
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white"><strong>Identificação da Coleta</strong></div>
+            <div class="card-body row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">ID / Código da Bolsa:</label>
+                    <InputText @bind-Value="triagemModel.BolsaId" class="form-control" placeholder="Ex: 1001" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Data da Coleta/Análise:</label>
+                    <InputDate @bind-Value="triagemModel.DataExame" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header"><strong>Tipos de Exames Sorológicos a Realizar:</strong></div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="form-check">
+                            <InputCheckbox @bind-Value="triagemModel.Hiv" class="form-check-input" id="hiv" />
+                            <label class="form-check-label" for="hiv">HIV I/II (NAT)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="form-check">
+                            <InputCheckbox @bind-Value="triagemModel.HepatiteB" class="form-check-input" id="hepB" />
+                            <label class="form-check-label" for="hepB">Hepatite B (HBsAg/Anti-HBc)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="form-check">
+                            <InputCheckbox @bind-Value="triagemModel.HepatiteC" class="form-check-input" id="hepC" />
+                            <label class="form-check-label" for="hepC">Hepatite C (Anti-HCV/NAT)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="form-check">
+                            <InputCheckbox @bind-Value="triagemModel.Chagas" class="form-check-input" id="chagas" />
+                            <label class="form-check-label" for="chagas">Chagas</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="form-check">
+                            <InputCheckbox @bind-Value="triagemModel.Sifilis" class="form-check-input" id="sifilis" />
+                            <label class="form-check-label" for="sifilis">Sífilis</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="form-check">
+                            <InputCheckbox @bind-Value="triagemModel.Htlv" class="form-check-input" id="htlv" />
+                            <label class="form-check-label" for="htlv">HTLV I/II</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header"><strong>Resultado Global do Lote/Exame:</strong></div>
+            <div class="card-body">
+                <InputSelect @bind-Value="triagemModel.ResultadoGlobal" class="form-select">
+                    <option value="NAO_REATIVO">NÃO REATIVO (Aprovado / Sem impedimento)</option>
+                    <option value="REATIVO">REATIVO (Inapto / Descarte obrigatório)</option>
+                    <option value="INCONCLUSIVO">INCONCLUSIVO (Manter em quarentena / Refazer)</option>
+                </InputSelect>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mb-5">
+            <a href="/" class="btn btn-outline-secondary">Ir para Estoque</a>
+            <button type="submit" class="btn btn-danger" disabled="@isSubmitting">
+                @if (isSubmitting)
+                {
+                    <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                    <span>Salvando...</span>
+                }
+                else
+                {
+                    <span>Salvar Exames</span>
+                }
+            </button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    private TriagemExameDTO triagemModel = new();
+    private string? mensagemErro;
+    private string? mensagemSucesso;
+    private bool isSubmitting = false;
+
+    private async Task SalvarExames()
+    {
+        isSubmitting = true;
+        mensagemErro = null;
+        mensagemSucesso = null;
+
+        try
+        {
+            var response = await Http.PostAsJsonAsync("api/exames", triagemModel);
+
+            if (response.IsSuccessStatusCode)
+            {
+                mensagemSucesso = "Exames registrados e processados com sucesso!";
+                triagemModel = new(); // Limpa o formulário após salvar
+            }
+            else
+            {
+                mensagemErro = $"Erro ao salvar exames. Código de resposta da API: {response.StatusCode}";
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            mensagemErro = $"Erro de conexão: TypeError: Failed to fetch. Verifique se o serviço Backend está rodando e se a porta no Program.cs do Blazor coincide com o endereço da API. Detalhes: {ex.Message}";
+        }
+        catch (Exception ex)
+        {
+            mensagemErro = $"Ocorreu um erro inesperado: {ex.Message}";
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+
+    public class TriagemExameDTO
+    {
+        public string BolsaId { get; set; } = string.Empty;
+        public DateTime DataExame { get; set; } = DateTime.Today;
+        public bool Hiv { get; set; } = true;
+        public bool HepatiteB { get; set; } = true;
+        public bool HepatiteC { get; set; } = true;
+        public bool Chagas { get; set; } = true;
+        public bool Sifilis { get; set; } = true;
+        public bool Htlv { get; set; } = true;
+        public string ResultadoGlobal { get; set; } = "NAO_REATIVO";
+    }
+}

@@ -1,0 +1,83 @@
+@page "/bolsas"
+@using BancoDeSangue.Shared.Models
+@inject HttpClient Http
+
+<h3 class="mb-3 text-primary"><i class="bi bi-droplet-fill text-danger"></i> Controle de Bolsas de Sangue</h3>
+
+@if (bolsas == null)
+{
+    <p><em>Carregando bolsas...</em></p>
+}
+else
+{
+    <table class="table table-hover align-middle shadow-sm bg-white rounded">
+        <thead class="table-dark">
+            <tr>
+                <th>Código</th>
+                <th>Tipo</th>
+                <th>Volume</th>
+                <th>Validade</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var bolsa in bolsas)
+            {
+                <tr>
+                    <td><strong>@bolsa.CodigoBolsa</strong></td>
+                    <td><span class="badge bg-danger">@bolsa.TipoSanguineo</span></td>
+                    <td>@bolsa.VolumeMl ml</td>
+                    <td>@bolsa.DataValidade.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <span class="badge @GetBadgeStatus(bolsa.StatusBolsa)">
+                            @bolsa.StatusBolsa
+                        </span>
+                    </td>
+                    <td>
+                        @if (bolsa.StatusBolsa == "EM_ANALISE")
+                        {
+                            <button class="btn btn-sm btn-outline-primary" @onclick="() => ProcessarAvaliacaobolsa(bolsa.BolsaId)">
+                                Executar Avaliação (Procedure)
+                            </button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<BolsaSangue>? bolsas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CarregarBolsas();
+    }
+
+    private async Task CarregarBolsas()
+    {
+        bolsas = await Http.GetFromJsonAsync<List<BolsaSangue>>("api/triagem/bolsas");
+    }
+
+    private async Task ProcessarAvaliacaobolsa(int bolsaId)
+    {
+        // Chama a Action do Controller que roda a Stored Procedure sp_AvaliarELiberarBolsa
+        var response = await Http.PostAsync($"api/triagem/avaliar-bolsa/{bolsaId}", null);
+        
+        if (response.IsSuccessStatusCode)
+        {
+            await CarregarBolsas(); // Recarrega a lista para mostrar o novo status
+        }
+    }
+
+    private string GetBadgeStatus(string status) => status switch
+    {
+        "LIBERADO" => "bg-success",
+        "EM_ANALISE" => "bg-warning text-dark",
+        "DESCARTADO" => "bg-danger",
+        "UTILIZADO" => "bg-secondary",
+        _ => "bg-dark"
+    };
+}

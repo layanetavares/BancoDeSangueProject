@@ -1,0 +1,79 @@
+@page "/criterios-anvisa"
+
+<h3 class="mb-3 text-primary"><i class="bi bi-shield-check"></i> Critérios de Triagem Anvisa (RDC 34/2014)</h3>
+
+<ul class="nav nav-tabs" id="anvisaTabs" role="tablist">
+    <li class="nav-item">
+        <button class="nav-link active" id="geral-tab" data-bs-toggle="tab" data-bs-target="#geral" type="button">
+            Triagem Clínica
+        </button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" id="temp-tab" data-bs-toggle="tab" data-bs-target="#temp" type="button">
+            Inaptidão Temporária
+        </button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" id="def-tab" data-bs-toggle="tab" data-bs-target="#def" type="button">
+            Inaptidão Definitiva
+        </button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" id="soro-tab" data-bs-toggle="tab" data-bs-target="#soro" type="button">
+            Triagem Sorológica
+        </button>
+    </li>
+</ul>
+
+<div class="tab-content p-4 bg-white border border-top-0 rounded-bottom shadow-sm">
+    <!-- Aba 1 -->
+    <div class="tab-pane fade show active" id="geral">
+        <h5 class="fw-bold">Requisitos Básicos do Doador</h5>
+        <ul class="list-group list-group-flush mt-3">
+            <li class="list-group-item"><strong>Idade:</strong> 16 a 69 anos (1ª doação até 60 anos).</li>
+            <li class="list-group-item"><strong>Peso:</strong> Mínimo 50 kg.</li>
+            <li class="list-group-item"><strong>Sinais Vitais:</strong> Pulso 60-100 bpm | PA &le; 180/100 mmHg | Temp &le; 37,0 °C.</li>
+            <li class="list-group-item"><strong>Hemoglobina:</strong> Mulheres &ge; 12,5 g/dL | Homens &ge; 13,0 g/dL.</li>
+        </ul>
+    </div>
+
+    <!-- Aba 2 -->
+    <div class="tab-pane fade" id="temp">
+        <h5 class="fw-bold">Prazos de Inaptidão Temporária</h5>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <div class="alert alert-warning">
+                    <strong>Gripe/Febre:</strong> 7 dias após o fim dos sintomas.<br />
+                    <strong>Bebida Alcoólica:</strong> 12 horas.
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-warning">
+                    <strong>Tatuagem/Piercing:</strong> 6 a 12 meses.<br />
+                    <strong>Vacina Febre Amarela/Sarampo:</strong> 4 semanas.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aba 3 -->
+    <div class="tab-pane fade" id="def">
+        <div class="alert alert-danger mb-0">
+            <h5 class="alert-heading fw-bold"><i class="bi bi-exclamation-triangle"></i> Impedimentos Definitivos</h5>
+            <p class="mb-0">Histórico de HIV, HTLV I/II, Hepatite B ou C (após 11 anos), Doença de Chagas ou uso de drogas ilícitas injetáveis.</p>
+        </div>
+    </div>
+
+    <!-- Aba 4 -->
+    <div class="tab-pane fade" id="soro">
+        <h5 class="fw-bold mb-3">Exames Obrigatórios na Bolsa (100% das amostras)</h5>
+        <div class="d-flex flex-wrap gap-2">
+            <span class="badge bg-primary fs-6">HIV I e II (com NAT)</span>
+            <span class="badge bg-primary fs-6">Hepatite B (AgHBs e Anti-HBc)</span>
+            <span class="badge bg-primary fs-6">Hepatite C (com NAT)</span>
+            <span class="badge bg-primary fs-6">HTLV I e II</span>
+            <span class="badge bg-primary fs-6">Sífilis</span>
+            <span class="badge bg-primary fs-6">Doença de Chagas</span>
+        </div>
+    </div>
+</div>

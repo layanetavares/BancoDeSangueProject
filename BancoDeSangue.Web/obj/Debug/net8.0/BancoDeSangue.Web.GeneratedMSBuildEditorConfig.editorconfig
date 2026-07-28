@@ -1,0 +1,64 @@
+is_global = true
+build_property.EnableAotAnalyzer = 
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = false
+build_property.IncludeAllContentForSelfExtract = 
+build_property.TargetFramework = net8.0
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EntryPointFilePath = 
+build_property._SupportedPlatformList = browser
+build_property.RootNamespace = BancoDeSangue.Web
+build_property.RootNamespace = BancoDeSangue.Web
+build_property.ProjectDir = C:\Projetos\BancoDesangueProject\BancoDeSangue.Web\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = false
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Projetos\BancoDesangueProject\BancoDeSangue.Web
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Projetos/BancoDesangueProject/BancoDeSangue.Web/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Projetos/BancoDesangueProject/BancoDeSangue.Web/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = TWFpbkxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Projetos/BancoDesangueProject/BancoDeSangue.Web/Pages/CriteriosAnvisaTabs.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3JpdGVyaW9zQW52aXNhVGFicy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Projetos/BancoDesangueProject/BancoDeSangue.Web/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Projetos/BancoDesangueProject/BancoDeSangue.Web/Pages/ListaBolsas.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTGlzdGFCb2xzYXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Projetos/BancoDesangueProject/BancoDeSangue.Web/Pages/RegistroConsumo.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0cm9Db25zdW1vLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Projetos/BancoDesangueProject/BancoDeSangue.Web/Pages/Triagem.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHJpYWdlbS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Projetos/BancoDesangueProject/BancoDeSangue.Web/Pages/TriagemSerologica.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHJpYWdlbVNlcm9sb2dpY2EucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Projetos/BancoDesangueProject/BancoDeSangue.Web/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 

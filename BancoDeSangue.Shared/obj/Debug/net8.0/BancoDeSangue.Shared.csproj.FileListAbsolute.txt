@@ -1,0 +1,11 @@
+C:\Projetos\BancoDeSangueProject\BancoDeSangue.Shared\bin\Debug\net8.0\BancoDeSangue.Shared.deps.json
+C:\Projetos\BancoDeSangueProject\BancoDeSangue.Shared\bin\Debug\net8.0\BancoDeSangue.Shared.dll
+C:\Projetos\BancoDeSangueProject\BancoDeSangue.Shared\bin\Debug\net8.0\BancoDeSangue.Shared.pdb
+C:\Projetos\BancoDeSangueProject\BancoDeSangue.Shared\obj\Debug\net8.0\BancoDeSangue.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projetos\BancoDeSangueProject\BancoDeSangue.Shared\obj\Debug\net8.0\BancoDeSangue.Shared.AssemblyInfoInputs.cache
+C:\Projetos\BancoDeSangueProject\BancoDeSangue.Shared\obj\Debug\net8.0\BancoDeSangue.Shared.AssemblyInfo.cs
+C:\Projetos\BancoDeSangueProject\BancoDeSangue.Shared\obj\Debug\net8.0\BancoDeSangue.Shared.csproj.CoreCompileInputs.cache
+C:\Projetos\BancoDeSangueProject\BancoDeSangue.Shared\obj\Debug\net8.0\BancoDeSangue.Shared.dll
+C:\Projetos\BancoDeSangueProject\BancoDeSangue.Shared\obj\Debug\net8.0\refint\BancoDeSangue.Shared.dll
+C:\Projetos\BancoDeSangueProject\BancoDeSangue.Shared\obj\Debug\net8.0\BancoDeSangue.Shared.pdb
+C:\Projetos\BancoDeSangueProject\BancoDeSangue.Shared\obj\Debug\net8.0\ref\BancoDeSangue.Shared.dll

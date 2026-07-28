@@ -1,0 +1,124 @@
+@page "/triagem-serologica"
+@using BancoDeSangue.Web.Models
+@inject HttpClient Http
+
+<PageTitle>Triagem Sorológica - RDC 34/2014</PageTitle>
+
+<h3 class="mb-4">Lançamento de Exames Sorológicos</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card p-3 shadow-sm">
+            <EditForm Model="@exameModel" OnValidSubmit="@SalvarExame">
+                <DataAnnotationsValidator />
+                <ValidationSummary class="text-danger" />
+
+                <div class="mb-3">
+                    <label class="form-label">Código/ID da Bolsa de Sangue:</label>
+                    <InputNumber @bind-Value="exameModel.BolsaId" class="form-control" placeholder="Ex: 101" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Tipo de Exame Sorológico:</label>
+                    <InputSelect @bind-Value="exameModel.TipoExame" class="form-select">
+                        <option value="">-- Selecione o Teste --</option>
+                        <option value="HIV">Anti-HIV I/II</option>
+                        <option value="HBsAg">Hepatite B (HBsAg)</option>
+                        <option value="Anti-HBc">Hepatite B (Anti-HBc)</option>
+                        <option value="HCV">Hepatite C (Anti-HCV)</option>
+                        <option value="Chagas">Chagas</option>
+                        <option value="Sifilis">Sífilis</option>
+                        <option value="HTLV">HTLV I/II</option>
+                    </InputSelect>
+                </div>
+
+                <div class="mb-3 form-check form-switch">
+                    <InputCheckbox @bind-Value="exameModel.Reagente" class="form-check-input" id="reagenteSwitch" />
+                    <label class="form-check-label text-danger fw-bold" for="reagenteSwitch">
+                        Resultado REAGENTE / POSITIVO?
+                    </label>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Observações Técnicas:</label>
+                    <InputTextArea @bind-Value="exameModel.Obsercoes" class="form-control" rows="2" />
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100" disabled="@isSubmitting">
+                    @(isSubmitting ? "Processando..." : "Registrar Exame")
+                </button>
+            </EditForm>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        @if (mensagemSucesso != null)
+        {
+            <div class="alert alert-success mt-3 mt-md-0">
+                <strong>Sucesso:</strong> @mensagemSucesso
+            </div>
+        }
+
+        @if (mensagemAlerta != null)
+        {
+            <div class="alert alert-warning mt-3 mt-md-0">
+                <strong>Atenção (RDC 34/2014):</strong> @mensagemAlerta
+            </div>
+        }
+
+        @if (mensagemErro != null)
+        {
+            <div class="alert alert-danger mt-3 mt-md-0">
+                <strong>Erro:</strong> @mensagemErro
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private ExameInputModel exameModel = new();
+    private bool isSubmitting = false;
+    private string? mensagemSucesso;
+    private string? mensagemAlerta;
+    private string? mensagemErro;
+
+    private async Task SalvarExame()
+    {
+        isSubmitting = true;
+        mensagemSucesso = null;
+        mensagemAlerta = null;
+        mensagemErro = null;
+
+        try
+        {
+            // Substitua a URL do endpoint caso a API backend esteja em outra porta/rota
+            var response = await Http.PostAsJsonAsync("http://localhost:5001/api/exames", exameModel);
+
+            if (response.IsSuccessStatusCode)
+            {
+                if (exameModel.Reagente)
+                {
+                    mensagemAlerta = $"Exame REAGENTE para {exameModel.TipoExame} registrado. A bolsa {exameModel.BolsaId} foi marcando para DESCARTE SANITÁRIO imediato.";
+                }
+                else
+                {
+                    mensagemSucesso = $"Exame NÃO REAGENTE para {exameModel.TipoExame} registrado com sucesso na bolsa {exameModel.BolsaId}.";
+                }
+
+                exameModel = new(); // Limpa o formulário
+            }
+            else
+            {
+                mensagemErro = $"Falha ao registrar exame no backend (Código: {response.StatusCode}).";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensagemErro = $"Erro de conexão com o servidor: {ex.Message}";
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+}

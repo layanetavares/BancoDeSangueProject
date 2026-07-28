@@ -1,0 +1,132 @@
+@page "/registro-consumo"
+@using Microsoft.AspNetCore.Components.Forms
+@using BancoDeSangue.Shared
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<div class="container my-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-danger text-white">
+            <h3 class="mb-0 fs-4">Registrar Consumo / Saída de Bolsa</h3>
+        </div>
+        <div class="card-body">
+
+            @if (!string.IsNullOrEmpty(mensagemErro))
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Erro:</strong> @mensagemErro
+                    <button type="button" class="btn-close" @onclick="() => mensagemErro = null"></button>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(mensagemSucesso))
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Sucesso!</strong> @mensagemSucesso
+                    <button type="button" class="btn-close" @onclick="() => mensagemSucesso = null"></button>
+                </div>
+            }
+
+            <EditForm Model="consumoModel" OnValidSubmit="SalvarConsumo">
+                <DataAnnotationsValidator />
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="bolsaId" class="form-label fw-bold">ID da Bolsa:</label>
+                        <InputNumber id="bolsaId" class="form-control" @bind-Value="consumoModel.BolsaId" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="paciente" class="form-label fw-bold">Nome do Paciente / Prontuário:</label>
+                        <InputText id="paciente" class="form-control" @bind-Value="consumoModel.Paciente" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="hospital" class="form-label fw-bold">Hospital / Setor Solicitante:</label>
+                        <InputText id="hospital" class="form-control" @bind-Value="consumoModel.Hospital" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="responsavel" class="form-label fw-bold">Profissional Responsável:</label>
+                        <InputText id="responsavel" class="form-control" @bind-Value="consumoModel.Responsavel" />
+                    </div>
+
+                    <div class="col-12">
+                        <label for="observacao" class="form-label fw-bold">Observações Gerais:</label>
+                        <InputText id="observacao" class="form-control" @bind-Value="consumoModel.Observacao" />
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-outline-secondary" @onclick="VoltarParaEstoque">
+                        Voltar ao Estoque
+                    </button>
+                    <button type="submit" class="btn btn-danger px-4" disabled="@isProcessando">
+                        @if (isProcessando)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                            <span>Registrando...</span>
+                        }
+                        else
+                        {
+                            <span>Confirmar Saída</span>
+                        }
+                    </button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    private ConsumoModel consumoModel = new ConsumoModel();
+    private string? mensagemErro;
+    private string? mensagemSucesso;
+    private bool isProcessando = false;
+
+    private async Task SalvarConsumo()
+    {
+        mensagemErro = null;
+        mensagemSucesso = null;
+        isProcessando = true;
+
+        try
+        {
+            var response = await Http.PostAsJsonAsync("api/consumo", consumoModel);
+
+            if (response.IsSuccessStatusCode)
+            {
+                mensagemSucesso = $"Saída da bolsa #{consumoModel.BolsaId} registrada com sucesso!";
+                consumoModel = new ConsumoModel();
+            }
+            else
+            {
+                mensagemErro = "Não foi possível registrar o consumo na API. Verifique os dados fornecidos.";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensagemErro = $"Erro ao se comunicar com a API: {ex.Message}";
+        }
+        finally
+        {
+            isProcessando = false;
+        }
+    }
+
+    private void VoltarParaEstoque()
+    {
+        Navigation.NavigateTo("/estoque");
+    }
+
+    public class ConsumoModel
+    {
+        public int BolsaId { get; set; } = 1001;
+        public string Paciente { get; set; } = string.Empty;
+        public string Hospital { get; set; } = string.Empty;
+        public string Responsavel { get; set; } = string.Empty;
+        public string Observacao { get; set; } = string.Empty;
+    }
+}
