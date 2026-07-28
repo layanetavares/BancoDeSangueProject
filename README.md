@@ -4,7 +4,7 @@
 ![Blazor](https://img.shields.io/badge/Blazor-WASM-512BD4?style=flat&logo=blazor)
 ![C#](https://img.shields.io/badge/C%23-12.0-239120?style=flat&logo=csharp)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=flat&logo=bootstrap)
-![Status](https://img.shields.io/badge/Status-Conclu%C3%ADdo-brightgreen)
+![Status](https://img.shields.io/badge/Status-Em%20Andamento-yellow)
 
 Sistema web desenvolvido para o gerenciamento de estoque, baixa/saída de hemocomponentes e registro em lote de exames sorológicos de triagem em doadores de sangue. O sistema segue rigorosamente os critérios de segurança e inativação de bolsas estabelecidos pela **RDC nº 34/2014 da ANVISA**.
 
